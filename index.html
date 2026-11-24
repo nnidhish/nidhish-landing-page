@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Nidhish Karkera — Test Engineer | Banking &amp; Payments QA</title>
+<meta name="description" content="Nidhish Karkera — Test Engineer with 4 years in fintech QA. API and UI automation, ISO 20022 payment flows, production defect validation." />
+<script>document.documentElement.classList.add('js');</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%230d9488'/%3E%3Ctext x='50' y='68' font-size='52' font-family='sans-serif' font-weight='bold' fill='white' text-anchor='middle'%3ENK%3C/text%3E%3C/svg%3E" />
+<style>
+  :root {
+    --bg: #070b12;
+    --bg-soft: #0c121c;
+    --card: rgba(255, 255, 255, 0.03);
+    --card-hover: rgba(255, 255, 255, 0.055);
+    --border: rgba(255, 255, 255, 0.09);
+    --text: #e8edf5;
+    --muted: #8d9aad;
+    --accent: #2dd4bf;
+    --accent-2: #38bdf8;
+    --accent-soft: rgba(45, 212, 191, 0.12);
+    --radius: 16px;
+    --max: 1080px;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Ambient background */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(650px 420px at 12% -5%, rgba(45, 212, 191, 0.16), transparent 65%),
+      radial-gradient(700px 500px at 92% 8%, rgba(56, 189, 248, 0.13), transparent 65%),
+      radial-gradient(900px 600px at 50% 105%, rgba(45, 212, 191, 0.07), transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Faint grid overlay */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent 80%);
+    pointer-events: none;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  .wrap { width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- Progress bar ---------- */
+  .progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    z-index: 100;
+    transition: width 0.1s linear;
+  }
+
+  /* ---------- Header ---------- */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    background: rgba(7, 11, 18, 0.72);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s ease, background 0.3s ease;
+  }
+  header.scrolled { border-bottom-color: var(--border); background: rgba(7, 11, 18, 0.88); }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 66px;
+    gap: 20px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    font-size: 15px;
+  }
+  .brand-mark {
+    width: 32px; height: 32px;
+    display: grid;
+    place-items: center;
+    border-radius: 9px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #04120f;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+  }
+  .brand-sub { color: var(--muted); font-weight: 500; font-size: 13px; }
+
+  .nav-links { display: flex; align-items: center; gap: 4px; }
+  .nav-links a {
+    font-size: 13.5px;
+    color: var(--muted);
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: color 0.2s ease, background 0.2s ease;
+  }
+  .nav-links a:hover { color: var(--text); background: var(--card-hover); }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 18px;
+    border-radius: 10px;
+    font-size: 13.5px;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    cursor: pointer;
+    transition: transform 0.18s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    white-space: nowrap;
+  }
+  .btn:hover { background: var(--card-hover); border-color: rgba(45, 212, 191, 0.45); transform: translateY(-2px); }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #04120f;
+    border-color: transparent;
+    box-shadow: 0 8px 26px -12px rgba(45, 212, 191, 0.8);
+  }
+  .btn-primary:hover { background: linear-gradient(135deg, #4ae0cd, #5cc9fb); }
+
+  /* ---------- Hero ---------- */
+  .hero { padding: 84px 0 64px; }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 6px 14px 6px 11px;
+    border-radius: 999px;
+    border: 1px solid rgba(45, 212, 191, 0.28);
+    background: var(--accent-soft);
+    color: #9df0e4;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+  .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px rgba(45, 212, 191, 0.16);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 4px rgba(45, 212, 191, 0.16); }
+    50% { box-shadow: 0 0 0 8px rgba(45, 212, 191, 0.05); }
+  }
+
+  h1 {
+    font-size: clamp(2.4rem, 6.4vw, 4.1rem);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    font-weight: 800;
+    margin: 22px 0 0;
+  }
+  .grad {
+    background: linear-gradient(120deg, var(--accent) 10%, var(--accent-2) 90%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .role {
+    margin: 18px 0 0;
+    font-size: clamp(1rem, 2.3vw, 1.22rem);
+    color: #b9c4d4;
+    font-weight: 500;
+    max-width: 44ch;
+  }
+
+  .hero-copy {
+    margin: 18px 0 0;
+    color: var(--muted);
+    max-width: 62ch;
+    font-size: 16px;
+  }
+
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-top: 56px;
+  }
+  .stat {
+    padding: 20px 18px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    border-radius: 14px;
+    transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+  }
+  .stat:hover { border-color: rgba(45, 212, 191, 0.35); background: var(--card-hover); transform: translateY(-3px); }
+  .stat-num {
+    font-size: 1.85rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    background: linear-gradient(120deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    line-height: 1.1;
+  }
+  .stat-label { font-size: 12.5px; color: var(--muted); margin-top: 4px; line-height: 1.45; }
+
+  /* ---------- Sections ---------- */
+  section { padding: 68px 0; scroll-margin-top: 80px; }
+
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .eyebrow::after {
+    content: "";
+    height: 1px;
+    flex: 1;
+    max-width: 130px;
+    background: linear-gradient(90deg, rgba(45, 212, 191, 0.5), transparent);
+  }
+
+  h2 {
+    font-size: clamp(1.6rem, 3.6vw, 2.2rem);
+    letter-spacing: -0.025em;
+    font-weight: 750;
+    margin: 16px 0 0;
+    line-height: 1.15;
+  }
+
+  .lead { color: var(--muted); max-width: 66ch; margin: 16px 0 0; }
+
+  /* ---------- About ---------- */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: 32px;
+    margin-top: 36px;
+    align-items: start;
+  }
+  .card {
+    border: 1px solid var(--border);
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 26px;
+  }
+  .card p { margin: 0 0 14px; color: #c3cddc; font-size: 15.2px; }
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag-title {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag {
+    font-size: 12.5px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.025);
+    color: #becbd9;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+  .tag:hover { border-color: rgba(45, 212, 191, 0.45); color: #a9f2e7; }
+  .tag.accent { border-color: rgba(45, 212, 191, 0.3); background: var(--accent-soft); color: #9df0e4; }
+
+  /* ---------- Experience timeline ---------- */
+  .timeline { margin-top: 40px; position: relative; padding-left: 26px; }
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: linear-gradient(180deg, rgba(45, 212, 191, 0.6), rgba(56, 189, 248, 0.25), transparent);
+  }
+
+  .job { position: relative; padding-bottom: 34px; }
+  .job:last-child { padding-bottom: 0; }
+  .job::before {
+    content: "";
+    position: absolute;
+    left: -26px;
+    top: 8px;
+    width: 11px; height: 11px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 0 4px rgba(45, 212, 191, 0.1);
+  }
+  .job:not(:first-child)::before { border-color: rgba(45, 212, 191, 0.55); }
+
+  .job-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px 16px;
+  }
+  .job-title { font-size: 17px; font-weight: 700; letter-spacing: -0.01em; }
+  .job-badge {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 6px;
+    border: 1px solid rgba(45, 212, 191, 0.3);
+    background: var(--accent-soft);
+    color: #9df0e4;
+    margin-left: 9px;
+    vertical-align: 2px;
+  }
+  .job-meta {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 12px;
+  }
+  .job-meta .sep { color: rgba(255, 255, 255, 0.18); }
+  .when { font-family: var(--mono); font-size: 12.3px; color: #9aa8bb; white-space: nowrap; }
+
+  .job ul { margin: 14px 0 0; padding: 0; list-style: none; }
+  .job li {
+    position: relative;
+    padding-left: 20px;
+    margin-bottom: 9px;
+    color: #b6c1d1;
+    font-size: 14.8px;
+    line-height: 1.65;
+  }
+  .job li:last-child { margin-bottom: 0; }
+  .job li::before {
+    content: "";
+    position: absolute;
+    left: 2px;
+    top: 11px;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: rgba(45, 212, 191, 0.65);
+  }
+
+  /* ---------- Skills ---------- */
+  .skills {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+    margin-top: 36px;
+  }
+  .skill-card {
+    border: 1px solid var(--border);
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 22px;
+    transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+  }
+  .skill-card:hover { border-color: rgba(45, 212, 191, 0.32); background: var(--card-hover); transform: translateY(-3px); }
+  .skill-card h3 {
+    margin: 0 0 4px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: -0.005em;
+  }
+  .skill-icon { color: var(--accent); margin-bottom: 12px; display: block; }
+  .skill-card .tags { margin-top: 14px; }
+
+  /* ---------- Education ---------- */
+  .edu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 36px;
+  }
+  .edu-card {
+    border: 1px solid var(--border);
+    background: linear-gradient(160deg, rgba(45, 212, 191, 0.06), rgba(255, 255, 255, 0.02));
+    border-radius: var(--radius);
+    padding: 26px;
+  }
+  .edu-card h3 { margin: 0; font-size: 16.5px; font-weight: 700; letter-spacing: -0.01em; }
+  .edu-card p { margin: 8px 0 0; color: var(--muted); font-size: 14.5px; }
+  .edu-when { font-family: var(--mono); font-size: 12.3px; color: var(--accent); margin-top: 14px; display: block; }
+
+  /* ---------- Contact ---------- */
+  .contact-box {
+    border: 1px solid var(--border);
+    background: radial-gradient(700px 320px at 15% 0%, rgba(45, 212, 191, 0.13), transparent 60%), rgba(255, 255, 255, 0.022);
+    border-radius: 22px;
+    padding: 46px 36px;
+    text-align: center;
+    margin-top: 36px;
+  }
+  .contact-box h2 { margin-top: 0; }
+  .contact-box .lead { margin: 14px auto 0; }
+  .contact-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 28px; }
+  .contact-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 26px;
+    justify-content: center;
+    margin-top: 26px;
+    font-size: 13.5px;
+    color: var(--muted);
+  }
+  .contact-details a { border-bottom: 1px solid rgba(45, 212, 191, 0.35); padding-bottom: 1px; transition: color 0.2s ease, border-color 0.2s ease; }
+  .contact-details a:hover { color: var(--accent); border-color: var(--accent); }
+
+  footer {
+    border-top: 1px solid var(--border);
+    margin-top: 72px;
+    padding: 26px 0 40px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 20px;
+    justify-content: space-between;
+    align-items: center;
+    color: #6f7d90;
+    font-size: 12.8px;
+  }
+  footer .mono { font-family: var(--mono); }
+
+  /* ---------- Reveal animation (progressive enhancement: only hidden when JS is on) ---------- */
+  .reveal {
+    transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .js .reveal { opacity: 0; transform: translateY(18px); }
+  .js .reveal.in { opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .js .reveal { opacity: 1; transform: none; transition: none; }
+    .dot { animation: none; }
+    * { transition-duration: 0.01ms !important; }
+  }
+
+  @media print {
+    .js .reveal { opacity: 1 !important; transform: none !important; }
+    header, .progress { display: none !important; }
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 900px) {
+    .about-grid { grid-template-columns: 1fr; gap: 16px; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 720px) {
+    .nav-links { display: none; }
+    .hero { padding: 60px 0 46px; }
+    section { padding: 54px 0; }
+    .contact-box { padding: 34px 22px; }
+    .timeline { padding-left: 22px; }
+    .job::before { left: -22px; }
+  }
+  @media (max-width: 420px) {
+    .stats { grid-template-columns: 1fr; }
+    .brand-sub { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<header id="header">
+  <div class="wrap nav">
+    <a href="#top" class="brand">
+      <span class="brand-mark">NK</span>
+      <span>Nidhish Karkera <span class="brand-sub">· Test Engineer</span></span>
+    </a>
+    <nav class="nav-links">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#education">Education</a>
+    </nav>
+    <a href="#contact" class="btn btn-primary">Get in touch</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <span class="pill reveal"><span class="dot"></span> Open to QA &amp; automation opportunities</span>
+      <h1 class="reveal">Nidhish<br /><span class="grad">Karkera</span></h1>
+      <p class="role reveal">Test Engineer — Banking &amp; Payments · QA Automation · API &amp; Integration Testing</p>
+      <p class="hero-copy reveal">
+        4 years of fintech quality assurance at TietoEVRY, testing enterprise banking and payment
+        systems end to end — from ISO 20022 message flows and API automation to production defect
+        validation across multi-system environments.
+      </p>
+      <div class="hero-actions reveal">
+        <a href="mailto:nidhishkarkera@gmail.com" class="btn btn-primary">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="m3 6 9 7 9-7"/></svg>
+          Email me
+        </a>
+        <a href="tel:+919449531544" class="btn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg>
+          Call
+        </a>
+        <a href="https://www.linkedin.com/in/n-nidhish-karkera-413a651b6/" target="_blank" rel="noopener noreferrer" class="btn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286ZM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065Zm1.782 13.019H3.555V9h3.564v11.452ZM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0Z"/></svg>
+          LinkedIn
+        </a>
+        <a href="#experience" class="btn">View experience</a>
+      </div>
+
+      <div class="stats">
+        <div class="stat reveal"><div class="stat-num">4 yrs</div><div class="stat-label">Fintech QA across banking &amp; payments</div></div>
+        <div class="stat reveal"><div class="stat-num">150+</div><div class="stat-label">Functional &amp; system test cases designed</div></div>
+        <div class="stat reveal"><div class="stat-num">60+</div><div class="stat-label">Automated regression tests built</div></div>
+        <div class="stat reveal"><div class="stat-num">9 mo</div><div class="stat-label">Onsite in Bergen, Norway</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="wrap">
+      <div class="eyebrow reveal">01 — About</div>
+      <h2 class="reveal">Quality at the heart of payment systems</h2>
+      <div class="about-grid">
+        <div class="card reveal">
+          <p>
+            I'm a Test Engineer specialising in fintech quality assurance, working on enterprise
+            banking and payment systems at TietoEVRY Fintech India. My focus spans functional,
+            feature, regression, integration, end-to-end and API testing — making sure money moves
+            correctly between systems, every time.
+          </p>
+          <p>
+            Day to day I build and maintain API automation with <strong>RestAssured</strong> (Java
+            and Cucumber) and UI automation with <strong>Cypress</strong> and TypeScript, wire it into
+            CI/CD with GitHub Actions, and validate backend behaviour through SQL on Linux and
+            OpenShift environments.
+          </p>
+          <p>
+            I've completed a 9-month onsite assignment in Bergen, Norway, supporting payment
+            regression, bank change requests and production defect investigation — including
+            reproducing hard-to-find issues inside restricted multi-system environments.
+          </p>
+        </div>
+        <div>
+          <div class="card reveal" style="margin-bottom:16px">
+            <div class="tag-title">Domain expertise</div>
+            <div class="tags">
+              <span class="tag accent">ISO 20022 (PAIN, PACS, CAMT)</span>
+              <span class="tag accent">SWIFT MT</span>
+              <span class="tag">Payment Initiation Systems</span>
+              <span class="tag">File Payments (SFTP &amp; MQ)</span>
+              <span class="tag">Teller Device Integration</span>
+              <span class="tag">Batch Processing</span>
+            </div>
+          </div>
+          <div class="card reveal">
+            <div class="tag-title">Certification</div>
+            <div class="tags">
+              <span class="tag accent">ISTQB CTFL — in progress, expected 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="wrap">
+      <div class="eyebrow reveal">02 — Experience</div>
+      <h2 class="reveal">TietoEVRY Fintech India Pvt Ltd</h2>
+      <p class="lead reveal">Four years of progressive responsibility, from foundational testing to onsite payment regression and automation ownership.</p>
+
+      <div class="timeline">
+
+        <article class="job reveal">
+          <div class="job-head">
+            <div>
+              <span class="job-title">Test Engineer</span>
+            </div>
+            <span class="when">Aug 2026 — Present</span>
+          </div>
+          <div class="job-meta"><span>Bengaluru, India</span></div>
+          <ul>
+            <li>Perform functional, feature and regression testing for Payment Client (PCL) and PBD UI across banking payment initiation workflows.</li>
+            <li>Execute API testing to validate request/response behaviour and service integrations as part of feature and regression testing.</li>
+            <li>Develop and maintain API automation tests using RestAssured with Java and Cucumber within the team's automation framework.</li>
+            <li>Retest production defects after fixes and validate affected functionality in test environments before closure.</li>
+            <li>Manage regression test environments, including application build and deployment activities required for test execution.</li>
+            <li>Monitor and manage automation jobs used for regression execution across release cycles.</li>
+          </ul>
+        </article>
+
+        <article class="job reveal">
+          <div class="job-head">
+            <div>
+              <span class="job-title">Test Engineer – Onsite</span>
+              <span class="job-badge">Norway</span>
+            </div>
+            <span class="when">Nov 2025 — Aug 2026</span>
+          </div>
+          <div class="job-meta"><span>Bergen, Norway</span></div>
+          <ul>
+            <li>Validated bank-specific change requests and performed end-to-end and regression testing for PAINT (Payment International) processing across Tietoevry Payment Hub (TPH) and integrated systems using ISO 20022 formats (PAIN, PACS, CAMT).</li>
+            <li>Investigated and reproduced production defects in restricted multi-system environments using Linux, OpenShift, Argo CD and Grafana for log analysis, behaviour validation and debug information collection.</li>
+            <li>Executed end-to-end value chain testing for international payment processing, validating payment messages, backend behaviour and cross-system integrations across TPH and related applications.</li>
+            <li>Initiated Cypress automation for the Payment Client (PCL) UI by identifying suitable regression scenarios and evaluating automation feasibility in a restricted test environment.</li>
+            <li>Wrote SQL queries for backend data validation, system investigation and defect triage during payment flow testing and production issue analysis.</li>
+          </ul>
+        </article>
+
+        <article class="job reveal">
+          <div class="job-head">
+            <div><span class="job-title">Test Engineer</span></div>
+            <span class="when">Jan 2025 — Nov 2025</span>
+          </div>
+          <div class="job-meta"><span>Bengaluru, India</span></div>
+          <ul>
+            <li>Developed and maintained 35+ automated regression tests using Cypress and TypeScript with a modular structure for UI regression coverage.</li>
+            <li>Built and executed 25+ ReadyAPI automation test cases using Groovy scripts, integrated into GitHub Actions workflows for automated execution.</li>
+            <li>Led hardware-software integration testing for teller devices such as scanners, receipt printers and signature pads, validating communication between device layers and core banking applications.</li>
+            <li>Validated REST and SOAP APIs using Postman and ReadyAPI, and supported environment configuration and client/server/daemon deployments via AD-CM and GHA.</li>
+          </ul>
+        </article>
+
+        <article class="job reveal">
+          <div class="job-head">
+            <div><span class="job-title">Junior Test Engineer</span></div>
+            <span class="when">Aug 2022 — Jan 2025</span>
+          </div>
+          <div class="job-meta"><span>Bengaluru, India</span></div>
+          <ul>
+            <li>Participated in early SDLC and shift-left testing by reviewing High-Level Requirement (HLR) documents and user stories, identifying gaps and clarifying requirements with developers and business stakeholders.</li>
+            <li>Prepared test plans and designed and maintained 150+ functional and system test scenarios/test cases in Octane, tracked execution and reported defects through JIRA across release cycles.</li>
+            <li>Executed feature and regression testing, tested migrated Open API REST services using Postman, and validated backend data integrity through SQL verification.</li>
+            <li>Used Linux commands and log analysis tools via SSH, PuTTY and WinSCP to investigate issues, and contributed foundational automation scripts to early-stage Cypress test suites.</li>
+          </ul>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="wrap">
+      <div class="eyebrow reveal">03 — Skills</div>
+      <h2 class="reveal">Technical toolkit</h2>
+
+      <div class="skills">
+        <div class="skill-card reveal">
+          <svg class="skill-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 6-6 6 6 6M16 6l6 6-6 6"/></svg>
+          <h3>Programming &amp; Scripting</h3>
+          <div class="tags">
+            <span class="tag">Java</span><span class="tag">TypeScript</span><span class="tag">Groovy</span><span class="tag">SQL</span>
+          </div>
+        </div>
+
+        <div class="skill-card reveal">
+          <svg class="skill-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg>
+          <h3>Testing &amp; QA</h3>
+          <div class="tags">
+            <span class="tag">Functional</span><span class="tag">Feature</span><span class="tag">Regression</span>
+            <span class="tag">End-to-End</span><span class="tag">Integration</span><span class="tag">API (REST/SOAP)</span>
+            <span class="tag">Production Defect Validation</span><span class="tag">Test Planning</span><span class="tag">Test Case Design</span>
+          </div>
+        </div>
+
+        <div class="skill-card reveal">
+          <svg class="skill-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.9 4.9l2.9 2.9M16.2 16.2l2.9 2.9M2 12h4M18 12h4M4.9 19.1l2.9-2.9M16.2 7.8l2.9-2.9"/></svg>
+          <h3>Automation &amp; CI/CD</h3>
+          <div class="tags">
+            <span class="tag accent">RestAssured</span><span class="tag accent">Cucumber</span><span class="tag accent">Cypress</span>
+            <span class="tag">ReadyAPI</span><span class="tag">GitHub Actions</span>
+          </div>
+        </div>
+
+        <div class="skill-card reveal">
+          <svg class="skill-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>
+          <h3>Database &amp; Infrastructure</h3>
+          <div class="tags">
+            <span class="tag">Oracle SQL</span><span class="tag">Linux / Unix</span><span class="tag">OpenShift (OC)</span>
+            <span class="tag">Argo CD</span><span class="tag">AD-CM</span>
+          </div>
+        </div>
+
+        <div class="skill-card reveal">
+          <svg class="skill-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 1-5.4 5.4L4 17v3h3l5.3-5.3a4 4 0 0 0 5.4-5.4l-2.4 2.4-2.4-2.4Z"/></svg>
+          <h3>Tools &amp; Platforms</h3>
+          <div class="tags">
+            <span class="tag">Postman</span><span class="tag">Xray</span><span class="tag">Octane</span><span class="tag">JIRA</span>
+            <span class="tag">Grafana</span><span class="tag">OpenSearch</span><span class="tag">Kibana</span>
+            <span class="tag">WinSCP</span><span class="tag">PuTTY</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <div class="wrap">
+      <div class="eyebrow reveal">04 — Education &amp; Certification</div>
+      <h2 class="reveal">Foundations</h2>
+
+      <div class="edu-grid">
+        <div class="edu-card reveal">
+          <h3>Bachelor of Engineering — Computer Science &amp; Engineering</h3>
+          <p>NMAM Institute of Technology, Nitte</p>
+          <span class="edu-when">2018 — 2022</span>
+        </div>
+        <div class="edu-card reveal">
+          <h3>ISTQB Certified Tester Foundation Level (CTFL)</h3>
+          <p>Certification in progress — strengthening formal testing fundamentals and shared vocabulary across QA teams.</p>
+          <span class="edu-when">Expected 2026</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="wrap">
+      <div class="eyebrow reveal">05 — Contact</div>
+      <div class="contact-box reveal">
+        <h2>Let's talk payments, quality, and automation</h2>
+        <p class="lead">Open to Test Engineer and QA automation roles in banking, payments and fintech. Happy to discuss ISO 20022 testing, automation frameworks, or production defect investigations.</p>
+        <div class="contact-actions">
+          <a href="mailto:nidhishkarkera@gmail.com" class="btn btn-primary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="m3 6 9 7 9-7"/></svg>
+            nidhishkarkera@gmail.com
+          </a>
+          <a href="tel:+919449531544" class="btn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg>
+            +91 94495 31544
+          </a>
+          <a href="https://www.linkedin.com/in/n-nidhish-karkera-413a651b6/" target="_blank" rel="noopener noreferrer" class="btn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286ZM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065Zm1.782 13.019H3.555V9h3.564v11.452ZM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0Z"/></svg>
+            LinkedIn
+          </a>
+        </div>
+        <div class="contact-details">
+          <span>Based in Bengaluru, India · onsite experience in Bergen, Norway</span>
+          <a href="https://www.linkedin.com/in/n-nidhish-karkera-413a651b6/" target="_blank" rel="noopener noreferrer">linkedin.com/in/n-nidhish-karkera</a>
+        </div>
+      </div>
+
+      <footer>
+        <span>© <span id="year">2026</span> Nidhish Karkera</span>
+        <span class="mono">Built with HTML, CSS &amp; a test-first mindset</span>
+      </footer>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // Year
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Header shadow + scroll progress
+  var header = document.getElementById('header');
+  var progress = document.getElementById('progress');
+  function onScroll() {
+    var y = window.scrollY || document.documentElement.scrollTop;
+    header.classList.toggle('scrolled', y > 8);
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    progress.style.width = (h > 0 ? (y / h) * 100 : 0) + '%';
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Reveal on scroll
+  var items = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+
+  function revealAll() {
+    items.forEach(function (el) { el.classList.add('in'); });
+  }
+
+  if ('IntersectionObserver' in window) {
+    var observerFired = false;
+    var io = new IntersectionObserver(function (entries) {
+      observerFired = true;
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    items.forEach(function (el, i) {
+      el.style.transitionDelay = Math.min(i % 6, 5) * 60 + 'ms';
+      io.observe(el);
+    });
+    // Safety net: only if the observer never runs, so content is never stuck hidden.
+    window.addEventListener('load', function () {
+      setTimeout(function () { if (!observerFired) revealAll(); }, 1200);
+    });
+  } else {
+    revealAll();
+  }
+</script>
+
+</body>
+</html>
